@@ -71,14 +71,7 @@ uris={URI1,URI6}
 
 
 
-####temp additon####
-roll_list=[]
-roll_ref_list=[]
-pitch_list=[]
-pitch_ref_list=[]
-roll=0
-pitch=0
-#################
+
 
 
 
@@ -119,10 +112,6 @@ def log_callback(timestamp,data,logconf):
        vel_z=data['stateEstimate.vz']
 
 
-       
-      
-
-
        pos=None
        vel=None
        if plane=='xy':
@@ -134,13 +123,7 @@ def log_callback(timestamp,data,logconf):
            
        cf_id=logconf.uri[-1:]
        cf_id=int(cf_id[-1])
-       #print(cf_id)
-       #### temp addition###
-       if cf_id==6:
-        
-        roll=data['stateEstimate.roll']
-        pitch=data['stateEstimate.pitch']
-       #################
+      
        
        
         
@@ -183,16 +166,7 @@ def get_data(scf):
     
 
 
-##########temp addition####
-def plot_temp():
-       global roll_list,pitch_list,roll_ref_list,pitch_ref_list
-       plt.plot(roll_ref_list,color='red')
-       plt.plot(roll_list,color='blue')
-       plt.figure()
-       plt.plot(pitch_ref_list,color='red')
-       plt.plot(pitch_list,color='blue')
-       plt.show()
-####################
+
 
 def control_action(scf):
     
@@ -209,7 +183,7 @@ def control_action(scf):
         l=find_agent_by_cf_id(leader_agents,cf_id)
         
         start_1_l=time.time()
-        #print("here")
+        
         while(time.time()-start_1_l<-4):
             cf.commander.send_position_setpoint(l.position[0,0],l.position[1,0],leaders_z,0)
         start_2_l=time.time()
@@ -226,9 +200,9 @@ def control_action(scf):
         start_1_f=time.time()
         
         while(time.time()-start_1_f<3):
-            if cf_id==6:
+          
               cf.commander.send_position_setpoint(f.position[0,0],f.position[1,0],followers_z,0)
-              x=9
+            
         start_2_f=time.time()
         
         prev=0
@@ -236,45 +210,30 @@ def control_action(scf):
         accel=np.zeros((2,1))
         while(time.time()-start_2_f<15):
           
-          #print("a1")
+          
           curr=time.time()
           dt=curr-prev
           if cf_id==first_follower_cf_id:
-           #print("a2")
+   
            accel=get_acceleration(f,"ff")
-           print(cf_id)
-           #roll_list.append(accel[0,0])
-           #pitch_list.append(accel[1,0])
-           #print("a4")
+         
            collect_d(dist([f.position[0,0],f.position[1,0]],[leader_agents[0].position[0,0],leader_agents[0].position[1,0]]))
           else:
-           #print("a3")
+    
            accel=get_acceleration(f,"f")
-           #print("a5")
+         
           
           vel+=accel*dt
           
-          #att_roll,att_pitch=convert_accel2attitude(accel)
-          #vel*=0
+         
           if plane=='xy':
            
-           if cf_id==6:
-             
-             #print(accel[0,0],accel[1,0])
-             #cf.commander.send_velocity_world_setpoint(saturate(vel[0,0],0.1),saturate(vel[1,0],0.1),0,0)
-             #roll=ema_filt(0.2,f.neighbors[0].velocity[0,0]-f.velocity[0,0],f.neighbors[0].prev_velocity[0,0]-f.prev_velocity[0,0])
-             #pitch=ema_filt(0.2,f.neighbors[0].velocity[1,0]-f.velocity[1,0],f.neighbors[0].prev_velocity[1,0]-f.prev_velocity[1,0])
-             ####temp addition#########
-             roll_list.append(roll)
-             #roll_ref_list.append(att_roll)
-             pitch_list.append(pitch)
-             #pitch_ref_list.append(att_pitch)
-             #########################
+         
              if cf_out_of_bounds(f.position[0,0],f.position[1,0],f.position[2,0]):
-               print("ayo")
+          
                cf.commander.send_velocity_world_setpoint(0,0,0,0)
              else:
-              print("ayo")
+   
               #cf.commander.send_zdistance_setpoint(att_roll,att_pitch,0,followers_z)
               cf.commander.send_velocity_world_setpoint(saturate(vel[0,0],0.1),saturate(vel[1,0],0.1),0,0)
           if plane=='xz':
@@ -326,19 +285,15 @@ if __name__=="__main__":
        for f in ff:
          nn=[fnn.cf_id for fnn in f.neighbors]
          print(f.cf_id,nn)
-       #for ff in follower_agents:
-       #  ff_n=ff.neighbors
-       #  l=[ff_n_a.cf_id for ff_n_a in ff_n]
-        
-       #  print(ff.cf_id,"--->",l)
+     
         
        swarm.parallel(control_action)
-    plot_temp()####temp addition
-    #find_bearing_error(target_formation,adjacency_dict,r,first_follower_cf_id)
-    #plot(leader_agents,follower_agents,first_follower_cf_id,adjacency_dict,d_req)
+   
+    find_bearing_error(target_formation,adjacency_dict,r,first_follower_cf_id)
+    plot(leader_agents,follower_agents,first_follower_cf_id,adjacency_dict,d_req)
 
-    #ani=get_animate_object()
-    #animate(ani)
+    ani=get_animate_object()
+    animate(ani)
         
            
        
