@@ -11,6 +11,6 @@ The three control laws are:
 
 - Bearing-only formation control when agents are treated as double integrators
 
-Opening [github folder]()
+Opening [github folder](github folder)
 
 
