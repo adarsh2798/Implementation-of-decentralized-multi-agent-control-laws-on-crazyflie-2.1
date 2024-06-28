@@ -11,6 +11,6 @@ The three control laws are:
 
 - Bearing-only formation control when agents are treated as double integrators
 
-Opening [github folder](./github folder)
+Opening [github folder](https://github.com/adarsh2798/Implementation-of-decentralized-multi-agent-control-laws-on-crazyflie-2.1/tree/main/github%20folder), the 3 folders for the above ,mentioned control laws can be seen. They contain codes used to implement tem on crazyflie 2.1. The folder [videos]()
 
 
