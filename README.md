@@ -15,4 +15,6 @@ Opening [github folder](https://github.com/adarsh2798/Implementation-of-decentra
 
 The implemenation's codebase is written in python and uses the python library [cflib](https://github.com/bitcraze/crazyflie-lib-python) developed by bitcraze. Ensure this library is in the same directory as the above mentioned codes to run them.
 
+[This report](https://github.com/adarsh2798/Implementation-of-decentralized-multi-agent-control-laws-on-crazyflie-2.1/blob/main/github%20folder/final%20report/final%20report.pdf) contains details of the above implementation.
+
 
